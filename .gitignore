@@ -161,3 +161,11 @@ cython_debug/
 Data/metadata.json
 Data/amazon.csv
 Data/products.csv
+Data/FashionMNIST/raw/t10k-images-idx3-ubyte
+Data/FashionMNIST/raw/t10k-images-idx3-ubyte.gz
+Data/FashionMNIST/raw/t10k-labels-idx1-ubyte
+Data/FashionMNIST/raw/t10k-labels-idx1-ubyte.gz
+Data/FashionMNIST/raw/train-images-idx3-ubyte
+Data/FashionMNIST/raw/train-images-idx3-ubyte.gz
+Data/FashionMNIST/raw/train-labels-idx1-ubyte
+Data/FashionMNIST/raw/train-labels-idx1-ubyte.gz
