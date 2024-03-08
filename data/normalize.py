@@ -2,7 +2,9 @@
 
 import csv
 import sys
+import string
 
+csv.field_size_limit(2147483647)
 
 def unescape(s):
     if sys.version_info >= (3, 0):
@@ -32,5 +34,9 @@ with open(in_file, 'r') as f:
         if not (count % 10000):
             print(count, 'rows normalized')
         row = [x if "http" in x else unescape(x).lower().replace('\\n', ' ') for x in row]
+        row = [x.encode("ascii", errors="ignore").decode() for x in row]
+        # Remove rows without categories cause i forgot to do that in parse
+        if row and row[1] == '':
+            row = ''
         writer.writerow(row)
     print(count, 'rows normalized')

@@ -1,5 +1,6 @@
 import csv
 import sys
+import os
 
 import urllib.request 
 from PIL import Image 
@@ -13,5 +14,8 @@ with open(in_file, 'r') as f:
     for row in reader:
         if row:
             url = row[1]
-            urllib.request.urlretrieve(url, str(count) + ".jpg")
+            dir = "./img/" + row[2]
+            if not(os.path.isdir(dir)):
+                os.mkdir(dir)
+            urllib.request.urlretrieve(url, dir + "/" + str(count) + ".jpg")
             count += 1
