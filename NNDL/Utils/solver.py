@@ -11,6 +11,7 @@ device = (
     if torch.backends.mps.is_available()
     else "cpu"
 )
+#device="cpu"
 def train(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
     model.train()
@@ -26,11 +27,11 @@ def train(dataloader, model, loss_fn, optimizer):
         optimizer.step()
         optimizer.zero_grad()
         loss, current = loss.item(), (batch + 1) * len(X)
-        print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+        #print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
-        # if batch % 64 == 0:
-        #     loss, current = loss.item(), (batch + 1) * len(X)
-        #     print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+        if batch % 100 == 0:
+            loss, current = loss, (batch + 1) * len(X)
+            print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 def test(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
