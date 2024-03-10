@@ -169,3 +169,6 @@ Data/FashionMNIST/raw/train-images-idx3-ubyte
 Data/FashionMNIST/raw/train-images-idx3-ubyte.gz
 Data/FashionMNIST/raw/train-labels-idx1-ubyte
 Data/FashionMNIST/raw/train-labels-idx1-ubyte.gz
+img
+Data/products_noimg.csv
+Data/products.normalized.csv

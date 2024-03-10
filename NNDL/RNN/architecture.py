@@ -8,7 +8,7 @@ class RNN(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
         super(RNN, self).__init__()
         self.rnn = nn.RNN(input_size, hidden_size, batch_first=True)
-        self.flatten = nn.Flatten()
+        # self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
@@ -18,13 +18,50 @@ class RNN(nn.Module):
     def forward(self, x):
         # Input shape: (batch_size, sequence_length, input_size)
         output, _ = self.rnn(x)
-        
-        # Use the output from the last time step for each sequence in the batch
-        # print(output)
-        # last_output = output[:, -1, :]
-        
-        # # If the last_output tensor is 3D, you might need to flatten it
-        # last_output = last_output.view(last_output.size(0), -1)
 
         x = self.linear_relu_stack(output)
         return x
+
+# import torch
+# import torch.nn as nn
+
+
+# class MyNetwork(nn.Module):
+#     def __init__(self, input_size, hidden_size, num_classes):
+#         super(MyNetwork, self).__init__()
+
+#         # Define layers
+#         # self.dropout = nn.Dropout(p=0.5)
+#         self.conv1 = nn.Conv1d(hidden_size, 1, kernel_size=512, padding=1)
+#         # self.maxpool1 = nn.MaxPool1d(kernel_size=2)
+#         # self.conv2 = nn.Conv1d(64, 128, kernel_size=3, padding=1)
+#         # self.maxpool2 = nn.MaxPool1d(kernel_size=2)
+#         # self.conv3 = nn.Conv1d(128, 256, kernel_size=3, padding=1)
+#         # self.global_maxpool = nn.AdaptiveMaxPool1d(1)
+#         # self.flatten = nn.Flatten()
+#         # self.fc1 = nn.Linear(256, hidden_dim)
+#         # self.relu = nn.ReLU()
+#         # self.fc2 = nn.Linear(hidden_dim, output_dim)
+#         # self.softmax = nn.Softmax(dim=1)
+#         self.linear_relu_stack = nn.Sequential(
+#             nn.Linear(hidden_size, hidden_size),
+#             nn.ReLU(),
+#             nn.Linear(hidden_size, num_classes)
+#         )
+
+#     def forward(self, x):
+#         # x = self.dropout(x)
+#         x = self.conv1(x)
+#         # x = self.maxpool1(x)
+#         # x = self.conv2(x)
+#         # x = self.maxpool2(x)
+#         # x = self.conv3(x)
+#         # x = self.global_maxpool(x)
+#         # x = self.flatten(x)
+#         # x = self.fc1(x)
+#         # x = self.relu(x)
+#         # x = self.fc2(x)
+#         # x = self.softmax(x)
+#         logits = self.linear_relu_stack(x)
+
+#         return logits
