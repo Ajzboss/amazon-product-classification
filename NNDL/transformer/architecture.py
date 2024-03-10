@@ -11,7 +11,7 @@ device = (
     else "cpu"
 )
 print(f"Using {device} device")
-class Transformer(nn.Module):
+class Transformer2(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
         super().__init__()
         self.flatten = nn.Flatten()
