@@ -173,3 +173,7 @@ img
 Data/products_noimg.csv
 Data/products.normalized.csv
 data/products.normalized_top10.csv
+data/products_noimg.csv
+data/products.normalized_top10.csv
+img
+data
