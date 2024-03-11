@@ -11,17 +11,19 @@ device = (
     if torch.backends.mps.is_available()
     else "cpu"
 )
-#device="cpu"
+device="cpu"
 def train(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
     model.train()
     for batch, (X, y) in enumerate(dataloader):
+        #print(X)
         X, y = X.to(device), y.to(device)
         if torch.isnan(X).any() or torch.isinf(X).any():
                 raise ValueError("Input data contains NaN or infinite values.")
         # Compute prediction error
         pred = model(X)
-        #print(y)
+        #print(pred.shape)
+        #print(y.shape)
         loss = loss_fn(pred, y)
         loss = loss.clamp(min=1e-4)
         # Backpropagation
@@ -30,7 +32,7 @@ def train(dataloader, model, loss_fn, optimizer):
             if param.grad is not None:
                 if torch.isnan(param.grad).any() or torch.isinf(param.grad).any():
                     print(f"Param.grad that is nan or inf:{param.grad} ")
-        torch.nn.utils.clip_grad_norm_(model.parameters(),10,error_if_nonfinite =True)
+        #torch.nn.utils.clip_grad_norm_(model.parameters(),10,error_if_nonfinite =True)
         optimizer.step()
         optimizer.zero_grad()
         #print(loss)
