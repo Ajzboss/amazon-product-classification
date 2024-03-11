@@ -32,9 +32,9 @@ class MyNetwork(nn.Module):
         super(MyNetwork, self).__init__()
         # Define layers
         glove_weights = torch.load(f".vector_cache/glove.6B.{embed_dim}d.txt.pt")
-        #print(glove_weights[2])
+        #print(glove_weights[2].shape)
         self.embedding = nn.Embedding.from_pretrained(glove_weights[2], freeze=True)
-        self.conv1 = nn.Conv1d(embed_dim,n_filters, filter_size,padding="same")
+        self.conv1 = nn.Conv1d(input_size,n_filters, filter_size,padding="same")
         self.relu = nn.ReLU()
         self.maxpool1 = nn.MaxPool1d(filter_size)
         self.conv2 = nn.Conv1d(n_filters,n_filters, filter_size,padding="same")
@@ -48,8 +48,9 @@ class MyNetwork(nn.Module):
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
+        #print(f"input SHAOE: {x.shape}")
         x=self.embedding(x)
-        #print(x.shape)
+        x= torch.transpose(x,2,1)
         #x = self.dropout(x)
         #print(x.shape)
         x = self.conv1(x)
