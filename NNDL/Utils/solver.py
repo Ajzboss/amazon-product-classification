@@ -16,21 +16,23 @@ def train(dataloader, model, loss_fn, optimizer):
     model.train()
     for batch, (X, y) in enumerate(dataloader):
         X, y = X.to(device), y.to(device)
-
+        if torch.isnan(X).any() or torch.isinf(X).any():
+                raise ValueError("Input data contains NaN or infinite values.")
         # Compute prediction error
         pred = model(X)
+        #print(y)
         loss = loss_fn(pred, y)
 
         # Backpropagation
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
+        #print(loss)
         loss, current = loss.item(), (batch + 1) * len(X)
-        print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+        #print(f"loss: {loss}  [{current}/{size}]")
 
-        # if batch % 64 == 0:
-        #     loss, current = loss.item(), (batch + 1) * len(X)
-        #     print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+        if batch % 64 == 0:
+            print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 def test(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
