@@ -6,10 +6,16 @@ from torchvision.transforms import ToTensor
 from torchtext.vocab import GloVe
 
 class RNN(nn.Module):
-    def __init__(self, input_size, hidden_size, num_classes):
+    def __init__(self, input_size, hidden_size, num_classes,embed_size,n_layers=1):
         super(RNN, self).__init__()
-        self.rnn = nn.RNN(input_size, hidden_size, batch_first=True)
+        self.n_layers= n_layers
+        self.hidden_dim = hidden_size
+        glove_weights = torch.load(f".vector_cache/glove.6B.{embed_size}d.txt.pt")
+        #print(glove_weights[2].shape)
+        self.embedding = nn.Embedding.from_pretrained(glove_weights[2], freeze=True)
+        self.LSTM = nn.LSTM(embed_size, hidden_size,n_layers, batch_first=True)
         # self.flatten = nn.Flatten()
+        self.fc= nn.Linear(embed_size, num_classes)
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
@@ -18,9 +24,16 @@ class RNN(nn.Module):
 
     def forward(self, x):
         # Input shape: (batch_size, sequence_length, input_size)
-        output, hidden = self.rnn(x)
-        assert torch.equal(output[-1,:,:], hidden.squeeze(0))
-        x = self.linear_relu_stack(hidden)
+        x=self.embedding(x)
+        x= torch.transpose(x,2,1)
+        #print(x.shape)
+        batch_size = x.size(0)
+        hidden = torch.zeros(self.n_layers, batch_size, self.hidden_dim)
+        x, h_n = self.LSTM(x)
+        x = x[:, -1, :]
+        print(x.shape)
+        x = self.fc(x)
+        #assert torch.equal(output[-1,:,:], hidden.squeeze(0))
         return x
 
 # import torch
