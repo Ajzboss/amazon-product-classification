@@ -3,6 +3,12 @@ from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from torch.utils.tensorboard import SummaryWriter
+
+# default `log_dir` is "runs" - we'll be more specific here
 
 device = (
     "cuda"
@@ -26,6 +32,9 @@ def train(dataloader, model, loss_fn, optimizer):
         #print(y.shape)
         loss = loss_fn(pred, y)
         loss = loss.clamp(min=1e-4)
+        # cm = confusion_matrix(y, pred)
+        # ConfusionMatrixDisplay(cm, model.classes_).plot()
+
         # Backpropagation
         loss.backward()
         for param in model.parameters():
@@ -41,6 +50,9 @@ def train(dataloader, model, loss_fn, optimizer):
 
         if batch % 64 == 0:
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+    model.to('cpu')
+    #torch.save(model, f"models\{model}\dataset_size:{size}")
+    model.to(device)
 
 def test(dataloader, model, loss_fn):
     size = len(dataloader.dataset)

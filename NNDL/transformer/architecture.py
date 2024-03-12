@@ -10,20 +10,23 @@ device = (
     if torch.backends.mps.is_available()
     else "cpu"
 )
-print(f"Using {device} device")
-class Transformer2(nn.Module):
-    def __init__(self, input_size, hidden_size, num_classes):
-        super().__init__()
-        self.flatten = nn.Flatten()
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(input_size, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, num_classes)
-        )
+class TransformerModel(nn.Module):
+    def __init__(self,input_size,embed_size,num_classes, nhead=5, num_encoder_layers=6):
+        super(TransformerModel, self).__init__()
+        glove_weights = torch.load(f".vector_cache/glove.6B.{embed_size}d.txt.pt")
+        #print(glove_weights[2].shape)
+        self.embedding = nn.Embedding.from_pretrained(glove_weights[2], freeze=True)
+        self.layer = nn.TransformerEncoderLayer(embed_size,nhead,dim_feedforward=100)
+        self.transformer = nn.TransformerEncoder(self.layer,num_encoder_layers)
+        self.fc= nn.Linear(embed_size, num_classes)
 
     def forward(self, x):
-        x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
-        return logits
+        x = self.embedding(x)
+        #print(x.shape)
+        x = x.permute(1, 0, 2)  # Change to (sequence_length, batch_size, d_model) for transformer input
+        x = self.transformer(x)
+        #print(x.shape)
+        x = x.permute(1, 0, 2)
+        x = x.mean(axis=1)
+        x = self.fc(x)
+        return x
