@@ -27,9 +27,8 @@ class RNN(nn.Module):
         x=self.embedding(x)
         x= torch.transpose(x,2,1)
         #print(x.shape)
-        batch_size = x.size(0)
-        hidden = torch.zeros(self.n_layers, batch_size, self.hidden_dim)
         x, h_n = self.LSTM(x)
+        del h_n
         x = x[:, -1, :]
         print(x.shape)
         x = self.fc(x)
@@ -87,7 +86,6 @@ class MyNetwork(nn.Module):
         x= self.relu(x)
         x = self.fc2(x)
         x = self.softmax(x)
-        logits = x
 
-        return logits
+        return x
 
