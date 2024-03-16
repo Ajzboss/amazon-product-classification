@@ -30,3 +30,24 @@ class TransformerModel(nn.Module):
         x = x.mean(axis=1)
         x = self.fc(x)
         return x
+
+class TransformerMetaModel(nn.Module):
+    def __init__(self,input_size,embed_size,num_classes, nhead=2, num_encoder_layers=6):
+        super(TransformerMetaModel, self).__init__()
+        #print(glove_weights[2].shape)
+        self.layer = nn.TransformerEncoderLayer(embed_size,nhead,dim_feedforward=10)
+        self.transformer = nn.TransformerEncoder(self.layer,num_encoder_layers)
+        self.fc= nn.Linear(embed_size, num_classes)
+
+    def forward(self, x):
+        x = x.permute(1, 0, 2)  # Change to (sequence_length, batch_size, d_model) for transformer input from [32, 2, 10]
+        #print(x.shape)
+        x = self.transformer(x)
+        #print(x.shape)
+        x = x.permute(1, 0, 2)
+        #print(x.shape)
+        x = x.mean(axis=1)
+        #print(x.shape)
+        x = self.fc(x)
+        #print(x.shape)
+        return x
