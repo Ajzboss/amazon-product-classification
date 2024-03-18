@@ -6,7 +6,7 @@ The purpose of this project is to create and analyze different neural network de
 Models were trained with TensorFlow version 2.8.3 (images) and PyTorch version 2.2.1 (text). If there are issues with loading models, try downgrading to these versions.
 To run the notebooks, our preprocessed dataset is required. Filepaths should be changed to the filepath of the data on your machine. Download our preprocessed data:
 
-Images: []
+Images: To generate the image models for the CNN or CNN + Inception, run their respective .ipynb notebooks with a properly parsed dataset of images from running the image scripts on the amazon dataset.
 
 Text: []
 
