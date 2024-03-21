@@ -183,4 +183,18 @@ models
 .vector_cache/glove.6B.300d.txt
 .vector_cache/glove.6B.zip
 .vector_cache/glove.840B.300d.zip
+data/products_noimg_top10.csv
+data/products_noimg_uniform_LDKEbb.csv
+models/MyNetwork/0.25-0.05_epochs-0.pt
+models/TransformerModel/0.25-0.05_epochs-0.pt
+# %% [markdown].py
+models/TransformerMetaModel/0.0075-0.0025_epochs-1.pt
+models/TransformerMetaModel/0.0075-0.0025_epochs-2.pt
+models/TransformerMetaModel/0.0075-0.0025_epochs-3.pt
+models/TransformerMetaModel/0.0075-0.0025_epochs-4.pt
+models/TransformerMetaModel/0.0075-0.0025_epochs-5.pt
+out.py
+models\image\gln_model_Qc0Yq7.keras
+# %% [markdown].py
 
+miniconda.exe
