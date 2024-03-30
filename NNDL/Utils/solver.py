@@ -23,7 +23,7 @@ device = (
     else "cpu"
 )
 #APply this if you want to make your model cpu or gpu
-#device="cpu" 
+device="cpu" 
 def train(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
     model.train()
