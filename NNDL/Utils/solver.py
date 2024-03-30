@@ -23,7 +23,7 @@ device = (
     else "cpu"
 )
 #APply this if you want to make your model cpu or gpu
-device="cpu" 
+#device="cpu" 
 def train(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
     model.train()
@@ -75,13 +75,13 @@ def test(dataloader, model, loss_fn):
             X, y = X.to(device), y.to(device)
             pred = model(X)
             if i == None:
-                all_pred=np.argmax(np.array(pred), axis=1)
-                all_labels =np.array(y)
+                all_pred=np.argmax(np.array(pred.to("cpu")), axis=1)
+                all_labels =np.array(y.to("cpu"))
                 i=True
             else:
-                all_pred= np.concatenate((all_pred,np.argmax(np.array(pred), axis=1)),axis=0)
-                all_labels = np.concatenate((all_labels,np.array(y)),axis=0)
-            test_loss += loss_fn(pred, y)
+                all_pred= np.concatenate((all_pred,np.argmax(np.array(pred.to("cpu")), axis=1)),axis=0)
+                all_labels = np.concatenate((all_labels,np.array(y.to("cpu"))),axis=0)
+            test_loss += loss_fn(pred.to("cpu"), y.to("cpu"))
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
             iter+= 1 
             print(f"Progress: {iter}/{num_batches},accuracy:{(100*(correct/size)):>0.1f},test_loss:{(test_loss/iter):>8f}")
